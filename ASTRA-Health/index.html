@@ -1,0 +1,1455 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASTRA Health | Astronaut Health Monitoring</title>
+
+<style>
+/* =====================================================
+   ASTRA HEALTH — VISUAL DESIGN
+   Sade, editöryal ve bilimsel arayüz
+===================================================== */
+
+:root {
+    --paper: #F4F1E9;
+    --surface: #FBFAF6;
+    --ink: #292B28;
+    --muted: #777A70;
+    --olive: #34483D;
+    --olive-light: #E5E9E0;
+    --terracotta: #B36B4B;
+    --border: #DCD9CF;
+    --warning: #A66A31;
+    --danger: #A34E45;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: Arial, Helvetica, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Sayfa genişliği */
+.container {
+    width: min(1180px, calc(100% - 48px));
+    margin: auto;
+}
+
+/* =====================================================
+   LOGIN SCREEN
+===================================================== */
+
+#loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 50px 0;
+}
+
+.login-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.login-intro {
+    padding: 35px 0;
+}
+
+.eyebrow {
+    color: var(--olive);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.login-intro h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: 1.02;
+    font-weight: 400;
+    letter-spacing: -2px;
+    margin: 25px 0;
+}
+
+.login-intro h1 span {
+    color: var(--olive);
+    font-style: italic;
+}
+
+.login-intro p {
+    color: var(--muted);
+    max-width: 440px;
+    font-size: 15px;
+}
+
+.login-note {
+    margin-top: 55px;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.login-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 38px;
+    border-radius: 5px;
+}
+
+.login-panel h2 {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 400;
+    margin: 0 0 8px;
+}
+
+.login-panel > p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 30px;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.field input {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    outline: none;
+    color: var(--ink);
+}
+
+.field input:focus {
+    border-color: var(--olive);
+}
+
+.primary-button {
+    width: 100%;
+    border: 1px solid var(--olive);
+    background: var(--olive);
+    color: white;
+    padding: 14px 18px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.primary-button:hover {
+    background: transparent;
+    color: var(--olive);
+}
+
+.login-error {
+    color: var(--danger);
+    font-size: 12px;
+    min-height: 20px;
+    margin-top: 12px;
+}
+
+.demo-hint {
+    border-top: 1px solid var(--border);
+    margin-top: 25px;
+    padding-top: 16px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* =====================================================
+   DASHBOARD HEADER
+===================================================== */
+
+#dashboard {
+    display: none;
+    padding-bottom: 60px;
+}
+
+.topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 19px 0;
+}
+
+.topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.brand {
+    font-family: var(--serif);
+    font-size: 25px;
+    color: var(--olive);
+    letter-spacing: -1px;
+}
+
+.brand small {
+    display: block;
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--olive);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--olive);
+}
+
+.logout {
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 8px 13px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.logout:hover {
+    border-color: var(--olive);
+    color: var(--olive);
+}
+
+/* =====================================================
+   INTRODUCTION
+===================================================== */
+
+.page-heading {
+    padding: 55px 0 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 30px;
+}
+
+.page-heading h1 {
+    font-family: var(--serif);
+    font-size: clamp(35px, 5vw, 54px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 12px 0;
+}
+
+.page-heading p {
+    color: var(--muted);
+    max-width: 550px;
+    margin: 0;
+}
+
+.mission-date {
+    text-align: right;
+    color: var(--muted);
+    font-size: 12px;
+    min-width: 150px;
+}
+
+/* =====================================================
+   CREW INFORMATION
+===================================================== */
+
+.crew-strip {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 19px 0;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.crew-item span {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+}
+
+.crew-item strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 400;
+    margin-top: 4px;
+}
+
+/* =====================================================
+   SECTION HEADINGS
+===================================================== */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+
+.section-heading h2 {
+    font-family: var(--serif);
+    font-size: 25px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.section-heading span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* =====================================================
+   BIOMETRIC CARDS
+===================================================== */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    min-height: 155px;
+    transition: border-color 0.2s;
+}
+
+.metric-card:hover {
+    border-color: var(--olive);
+}
+
+.metric-label {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.metric-value {
+    font-family: var(--serif);
+    font-size: 38px;
+    line-height: 1.2;
+    margin: 15px 0 5px;
+}
+
+.metric-unit {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.metric-state {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 10px;
+    color: var(--olive);
+    background: var(--olive-light);
+    padding: 3px 8px;
+}
+
+.metric-state.warning {
+    color: var(--warning);
+    background: #F2E9DB;
+}
+
+.metric-state.danger {
+    color: var(--danger);
+    background: #F1E3DF;
+}
+
+/* =====================================================
+   LOWER CONTENT
+===================================================== */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 0.8fr;
+    gap: 18px;
+    margin-top: 35px;
+}
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 23px;
+    min-width: 0;
+}
+
+.panel h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    margin: 0 0 5px;
+}
+
+.panel-description {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 20px;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 220px;
+}
+
+.alert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.alert-item {
+    border-left: 3px solid var(--olive);
+    padding: 10px 13px;
+    background: #F1F1EA;
+    font-size: 12px;
+}
+
+.alert-item.warning {
+    border-left-color: var(--warning);
+    background: #F4EEE4;
+}
+
+.alert-item.danger {
+    border-left-color: var(--danger);
+    background: #F4E9E5;
+}
+
+.alert-item strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.no-alert {
+    color: var(--muted);
+    font-size: 12px;
+    padding: 15px 0;
+}
+
+/* =====================================================
+   SIMULATION CONTROLS
+===================================================== */
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.secondary-button {
+    border: 1px solid var(--border);
+    background: transparent;
+    padding: 10px 15px;
+    color: var(--ink);
+    font-size: 11px;
+    transition: 0.2s;
+}
+
+.secondary-button:hover {
+    border-color: var(--olive);
+    color: var(--olive);
+}
+
+.scenario-select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 11px;
+}
+
+/* =====================================================
+   DATA METHODOLOGY
+===================================================== */
+
+.methodology {
+    margin-top: 40px;
+    padding: 25px 0;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+}
+
+.methodology h3 {
+    font-family: var(--serif);
+    font-size: 23px;
+    font-weight: 400;
+    margin: 0 0 8px;
+}
+
+.methodology p {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+}
+
+.footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    color: var(--muted);
+    font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+
+@media (max-width: 800px) {
+    .login-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .login-intro {
+        padding-bottom: 0;
+    }
+
+    .login-note {
+        margin-top: 20px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-heading {
+        display: block;
+    }
+
+    .mission-date {
+        text-align: left;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        width: calc(100% - 28px);
+    }
+
+    .login-panel {
+        padding: 23px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .metric-card {
+        padding: 13px;
+    }
+
+    .metric-value {
+        font-size: 30px;
+    }
+
+    .crew-strip {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .methodology {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar-inner {
+        align-items: flex-start;
+    }
+
+    .topbar-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 7px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===================================================
+     LOGIN SCREEN
+=================================================== -->
+
+<section id="loginScreen">
+    <div class="container login-layout">
+
+        <div class="login-intro">
+            <div class="eyebrow">Biomedical research system · Prototype</div>
+
+            <h1>
+                Health beyond<br>
+                <span>Earth.</span>
+            </h1>
+
+            <p>
+                ASTRA Health is an experimental astronaut health
+                monitoring interface designed to explore how
+                biomedical information can support human spaceflight.
+            </p>
+
+            <div class="login-note">
+                EXPERIMENTAL ENVIRONMENT / DEMONSTRATION BUILD 01
+            </div>
+        </div>
+
+        <div class="login-panel">
+            <div class="eyebrow">Crew access</div>
+            <h2>Welcome aboard.</h2>
+            <p>Enter your demonstration credentials to access the monitoring environment.</p>
+
+            <form id="loginForm">
+                <div class="field">
+                    <label for="crewId">Crew identification</label>
+                    <input
+                        id="crewId"
+                        type="text"
+                        placeholder="Enter Crew ID"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="accessCode">Access code</label>
+                    <input
+                        id="accessCode"
+                        type="password"
+                        placeholder="Enter access code"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button class="primary-button" type="submit">
+                    Enter monitoring system →
+                </button>
+
+                <div class="login-error" id="loginError"></div>
+            </form>
+
+            <div class="demo-hint">
+                DEMONSTRATION ACCESS<br>
+                Crew ID: ASTRA-01<br>
+                Access Code: ORBIT-2026
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ===================================================
+     MAIN DASHBOARD
+=================================================== -->
+
+<main id="dashboard">
+
+    <header class="topbar">
+        <div class="container topbar-inner">
+
+            <div class="brand">
+                ASTRA
+                <small>Health monitoring system</small>
+            </div>
+
+            <div class="topbar-right">
+                <div class="status">
+                    <span class="status-dot"></span>
+                    DEMO ENVIRONMENT
+                </div>
+
+                <button class="logout" onclick="logout()">
+                    Sign out
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <!-- Mission introduction -->
+
+        <section class="page-heading">
+            <div>
+                <div class="eyebrow">Crew monitoring / Overview</div>
+                <h1>Good to have you<br>back, <span id="crewGreeting">Commander</span>.</h1>
+                <p>
+                    This is your current biomedical overview.
+                    Measurements shown here are generated by a
+                    controlled simulation, not live astronaut sensors.
+                </p>
+            </div>
+
+            <div class="mission-date">
+                <div class="eyebrow">System date</div>
+                <strong id="currentDate">--</strong>
+                <div id="currentTime">--:--:-- UTC</div>
+            </div>
+        </section>
+
+
+        <!-- Crew information -->
+
+        <section class="crew-strip">
+
+            <div class="crew-item">
+                <span>Crew member</span>
+                <strong id="crewName">Demo Astronaut</strong>
+            </div>
+
+            <div class="crew-item">
+                <span>Crew identification</span>
+                <strong id="crewIdentifier">ASTRA-01</strong>
+            </div>
+
+            <div class="crew-item">
+                <span>Mission environment</span>
+                <strong>Orbital simulation</strong>
+            </div>
+
+        </section>
+
+
+        <!-- Biometric metrics -->
+
+        <section>
+            <div class="section-heading">
+                <h2>Biometric overview</h2>
+                <span>SYNTHETIC SENSOR DATA</span>
+            </div>
+
+            <div class="metrics-grid">
+
+                <div class="metric-card">
+                    <div class="metric-label">Heart rate</div>
+                    <div class="metric-value" id="heartRate">72</div>
+                    <div class="metric-unit">beats per minute · bpm</div>
+                    <div class="metric-state" id="heartState">Within demo range</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Oxygen saturation</div>
+                    <div class="metric-value" id="oxygen">98</div>
+                    <div class="metric-unit">percentage · SpO₂</div>
+                    <div class="metric-state" id="oxygenState">Within demo range</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Blood pressure</div>
+                    <div class="metric-value" id="bloodPressure">118/76</div>
+                    <div class="metric-unit">mmHg · systolic / diastolic</div>
+                    <div class="metric-state" id="pressureState">Within demo range</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Skin temperature</div>
+                    <div class="metric-value" id="temperature">33.8</div>
+                    <div class="metric-unit">degrees Celsius · °C</div>
+                    <div class="metric-state" id="temperatureState">Within demo range</div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- Charts and alerts -->
+
+        <section class="content-grid">
+
+            <div class="panel">
+                <h3>Heart rate over time</h3>
+                <div class="panel-description">
+                    Recent simulated measurements · bpm
+                </div>
+
+                <canvas id="heartChart" width="700" height="260"></canvas>
+            </div>
+
+            <div class="panel">
+                <h3>System observations</h3>
+                <div class="panel-description">
+                    Rule-based demonstration alerts
+                </div>
+
+                <div class="alert-list" id="alertList">
+                    <div class="no-alert">
+                        No observations requiring attention.
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Controls -->
+
+        <section>
+            <div class="section-heading" style="margin-top:40px">
+                <h2>Simulation controls</h2>
+                <span>CONTROLLED SCENARIOS</span>
+            </div>
+
+            <p style="font-size:12px;color:var(--muted)">
+                Select a predefined demonstration scenario to observe
+                how the monitoring interface responds to different
+                simulated measurements.
+            </p>
+
+            <div class="controls">
+
+                <select id="scenarioSelect" class="scenario-select">
+                    <option value="normal">Nominal conditions</option>
+                    <option value="exercise">Post-exercise simulation</option>
+                    <option value="lowOxygen">Low oxygen simulation</option>
+                    <option value="highHeart">Elevated heart rate simulation</option>
+                </select>
+
+                <button class="secondary-button" onclick="applyScenario()">
+                    Load scenario
+                </button>
+
+                <button class="secondary-button" id="pauseButton" onclick="toggleSimulation()">
+                    Pause updates
+                </button>
+
+                <button class="secondary-button" onclick="exportCSV()">
+                    Export measurements ↓
+                </button>
+
+            </div>
+        </section>
+
+
+        <!-- Methodology -->
+
+        <section class="methodology">
+
+            <div>
+                <div class="eyebrow">01 / Data methodology</div>
+                <h3>What are we measuring?</h3>
+                <p>
+                    The interface displays simulated heart rate,
+                    peripheral oxygen saturation, blood pressure
+                    and skin temperature. These variables are
+                    examples of physiological measurements that
+                    may be relevant to astronaut health monitoring.
+                </p>
+            </div>
+
+            <div>
+                <div class="eyebrow">02 / System limitations</div>
+                <h3>What this prototype does not do.</h3>
+                <p>
+                    This demonstration does not connect to NASA,
+                    real wearable sensors or medical equipment.
+                    It does not diagnose medical conditions.
+                    Alerts are generated using illustrative
+                    threshold rules, not a validated AI model.
+                </p>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            <span>ASTRA HEALTH · EXPERIMENTAL PROTOTYPE</span>
+            <span>SIMULATED DATA · NOT FOR CLINICAL USE</span>
+        </footer>
+
+    </div>
+</main>
+
+
+<script>
+
+/* =====================================================
+   1. LOGIN SYSTEM
+   Bu yalnızca demo girişidir.
+   Gerçek kullanıcı doğrulaması için sunucu gerekir.
+===================================================== */
+
+const DEMO_ID = "ASTRA-01";
+const DEMO_CODE = "ORBIT-2026";
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const enteredId =
+        document.getElementById("crewId").value.trim();
+
+    const enteredCode =
+        document.getElementById("accessCode").value.trim();
+
+    if (enteredId === DEMO_ID && enteredCode === DEMO_CODE) {
+
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+
+        document.getElementById("crewName").textContent = "Demo Astronaut";
+        document.getElementById("crewIdentifier").textContent = enteredId;
+        document.getElementById("crewGreeting").textContent = "Commander";
+
+        startSimulation();
+
+    } else {
+        document.getElementById("loginError").textContent =
+            "Access denied. Please check your demonstration credentials.";
+    }
+});
+
+
+function logout() {
+    stopSimulation();
+
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("loginScreen").style.display = "flex";
+
+    document.getElementById("accessCode").value = "";
+    document.getElementById("loginError").textContent = "";
+}
+
+
+/* =====================================================
+   2. SIMULATION DATA
+   Gerçek sensör verisi değildir.
+===================================================== */
+
+let currentData = {
+    heart: 72,
+    oxygen: 98,
+    systolic: 118,
+    diastolic: 76,
+    temperature: 33.8
+};
+
+let history = [];
+let simulationInterval = null;
+let simulationPaused = false;
+
+const MAX_HISTORY = 20;
+
+
+/* =====================================================
+   3. DATE AND TIME
+===================================================== */
+
+function updateClock() {
+
+    const now = new Date();
+
+    document.getElementById("currentDate").textContent =
+        now.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+
+    document.getElementById("currentTime").textContent =
+        now.toISOString().substring(11, 19) + " UTC";
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+
+/* =====================================================
+   4. UPDATE THE DASHBOARD
+===================================================== */
+
+function updateDashboard() {
+
+    document.getElementById("heartRate").textContent =
+        Math.round(currentData.heart);
+
+    document.getElementById("oxygen").textContent =
+        Math.round(currentData.oxygen);
+
+    document.getElementById("bloodPressure").textContent =
+        Math.round(currentData.systolic) + "/" +
+        Math.round(currentData.diastolic);
+
+    document.getElementById("temperature").textContent =
+        currentData.temperature.toFixed(1);
+
+    updateMetricState(
+        "heartState",
+        currentData.heart,
+        100,
+        120
+    );
+
+    updateMetricState(
+        "oxygenState",
+        currentData.oxygen,
+        95,
+        92,
+        true
+    );
+
+    updateMetricState(
+        "pressureState",
+        currentData.systolic,
+        140,
+        160
+    );
+
+    updateMetricState(
+        "temperatureState",
+        currentData.temperature,
+        37,
+        38
+    );
+
+    updateAlerts();
+    drawChart();
+}
+
+
+/* =====================================================
+   5. ILLUSTRATIVE THRESHOLD RULES
+   Bunlar klinik olarak doğrulanmış sınırlar değildir.
+===================================================== */
+
+function updateMetricState(elementId, value, warning, danger, inverse = false) {
+
+    const element = document.getElementById(elementId);
+
+    element.className = "metric-state";
+
+    let state = "Within demo range";
+
+    if (inverse) {
+
+        if (value < danger) {
+            state = "Attention required";
+            element.classList.add("danger");
+        } else if (value < warning) {
+            state = "Review suggested";
+            element.classList.add("warning");
+        }
+
+    } else {
+
+        if (value > danger) {
+            state = "Attention required";
+            element.classList.add("danger");
+        } else if (value > warning) {
+            state = "Review suggested";
+            element.classList.add("warning");
+        }
+    }
+
+    element.textContent = state;
+}
+
+
+/* =====================================================
+   6. ALERT GENERATION
+===================================================== */
+
+function updateAlerts() {
+
+    const alerts = [];
+
+    if (currentData.heart > 120) {
+        alerts.push({
+            level: "danger",
+            title: "Elevated simulated heart rate",
+            text: "The demonstration value has exceeded its illustrative threshold."
+        });
+    } else if (currentData.heart > 100) {
+        alerts.push({
+            level: "warning",
+            title: "Heart rate observation",
+            text: "The simulated value is above the nominal demonstration range."
+        });
+    }
+
+    if (currentData.oxygen < 92) {
+        alerts.push({
+            level: "danger",
+            title: "Low simulated oxygen saturation",
+            text: "The SpO₂ demonstration value is below its illustrative threshold."
+        });
+    } else if (currentData.oxygen < 95) {
+        alerts.push({
+            level: "warning",
+            title: "Oxygen saturation observation",
+            text: "The simulated value is below the nominal demonstration range."
+        });
+    }
+
+    if (currentData.systolic > 160) {
+        alerts.push({
+            level: "danger",
+            title: "Blood pressure observation",
+            text: "The simulated systolic value is above its illustrative threshold."
+        });
+    } else if (currentData.systolic > 140) {
+        alerts.push({
+            level: "warning",
+            title: "Blood pressure observation",
+            text: "The simulated systolic value is above the nominal demonstration range."
+        });
+    }
+
+    if (currentData.temperature > 38) {
+        alerts.push({
+            level: "danger",
+            title: "Temperature observation",
+            text: "The simulated skin temperature is above its illustrative threshold."
+        });
+    } else if (currentData.temperature > 37) {
+        alerts.push({
+            level: "warning",
+            title: "Temperature observation",
+            text: "The simulated skin temperature is above the nominal demonstration range."
+        });
+    }
+
+    const alertList = document.getElementById("alertList");
+
+    if (alerts.length === 0) {
+        alertList.innerHTML =
+            '<div class="no-alert">No observations requiring attention.</div>';
+        return;
+    }
+
+    alertList.innerHTML = alerts.map(alert => `
+        <div class="alert-item ${alert.level}">
+            <strong>${alert.title}</strong>
+            ${alert.text}
+        </div>
+    `).join("");
+}
+
+
+/* =====================================================
+   7. CONTROLLED SCENARIOS
+===================================================== */
+
+function applyScenario() {
+
+    const scenario =
+        document.getElementById("scenarioSelect").value;
+
+    if (scenario === "normal") {
+        currentData = {
+            heart: 72,
+            oxygen: 98,
+            systolic: 118,
+            diastolic: 76,
+            temperature: 33.8
+        };
+    }
+
+    if (scenario === "exercise") {
+        currentData = {
+            heart: 112,
+            oxygen: 97,
+            systolic: 135,
+            diastolic: 82,
+            temperature: 35.2
+        };
+    }
+
+    if (scenario === "lowOxygen") {
+        currentData = {
+            heart: 105,
+            oxygen: 89,
+            systolic: 125,
+            diastolic: 80,
+            temperature: 34.1
+        };
+    }
+
+    if (scenario === "highHeart") {
+        currentData = {
+            heart: 132,
+            oxygen: 97,
+            systolic: 128,
+            diastolic: 82,
+            temperature: 35.0
+        };
+    }
+
+    history.push({
+        time: new Date().toLocaleTimeString(),
+        heart: currentData.heart
+    });
+
+    updateDashboard();
+}
+
+
+/* =====================================================
+   8. SIMULATION LOOP
+   Her 4 saniyede küçük değişiklikler üretir.
+===================================================== */
+
+function startSimulation() {
+
+    stopSimulation();
+
+    simulationPaused = false;
+
+    document.getElementById("pauseButton").textContent =
+        "Pause updates";
+
+    simulationInterval = setInterval(function() {
+
+        if (simulationPaused) return;
+
+        // Ölçümler küçük değişimlerle güncellenir.
+        currentData.heart += (Math.random() - 0.5) * 4;
+        currentData.oxygen += (Math.random() - 0.5) * 0.6;
+        currentData.systolic += (Math.random() - 0.5) * 3;
+        currentData.diastolic += (Math.random() - 0.5) * 2;
+        currentData.temperature += (Math.random() - 0.5) * 0.2;
+
+        // Simülasyonun aşırı uzaklaşmasını önler.
+        currentData.heart = Math.max(55, Math.min(145, currentData.heart));
+        currentData.oxygen = Math.max(85, Math.min(100, currentData.oxygen));
+        currentData.systolic = Math.max(95, Math.min(175, currentData.systolic));
+        currentData.diastolic = Math.max(55, Math.min(110, currentData.diastolic));
+        currentData.temperature = Math.max(32, Math.min(39, currentData.temperature));
+
+        history.push({
+            time: new Date().toLocaleTimeString(),
+            heart: currentData.heart
+        });
+
+        if (history.length > MAX_HISTORY) {
+            history.shift();
+        }
+
+        updateDashboard();
+
+    }, 4000);
+
+    if (history.length === 0) {
+        applyScenario();
+    }
+}
+
+
+function stopSimulation() {
+    if (simulationInterval) {
+        clearInterval(simulationInterval);
+        simulationInterval = null;
+    }
+}
+
+
+function toggleSimulation() {
+
+    simulationPaused = !simulationPaused;
+
+    document.getElementById("pauseButton").textContent =
+        simulationPaused ? "Resume updates" : "Pause updates";
+}
+
+
+/* =====================================================
+   9. DRAW THE HEART RATE CHART
+   Grafik harici kütüphane kullanmadan çizilir.
+===================================================== */
+
+function drawChart() {
+
+    const canvas = document.getElementById("heartChart");
+    const ctx = canvas.getContext("2d");
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const values = history.map(item => item.heart);
+
+    if (values.length === 0) return;
+
+    const minValue = 50;
+    const maxValue = 150;
+
+    // Yatay referans çizgileri
+    ctx.strokeStyle = "#E4E1D8";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i < 5; i++) {
+
+        const y = 20 + i * 50;
+
+        ctx.beginPath();
+        ctx.moveTo(40, y);
+        ctx.lineTo(width - 10, y);
+        ctx.stroke();
+    }
+
+    // Ölçüm çizgisi
+    ctx.strokeStyle = "#34483D";
+    ctx.lineWidth = 3;
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+
+    values.forEach((value, index) => {
+
+        const x = 40 + (
+            index / Math.max(values.length - 1, 1)
+        ) * (width - 60);
+
+        const y = height - 20 - (
+            (value - minValue) / (maxValue - minValue)
+        ) * (height - 45);
+
+        if (index === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    });
+
+    ctx.stroke();
+
+    // Son ölçüm noktası
+    const lastValue = values[values.length - 1];
+
+    const lastX = 40 + (
+        (values.length - 1) / Math.max(values.length - 1, 1)
+    ) * (width - 60);
+
+    const lastY = height - 20 - (
+        (lastValue - minValue) / (maxValue - minValue)
+    ) * (height - 45);
+
+    ctx.fillStyle = "#B36B4B";
+    ctx.beginPath();
+    ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Grafik etiketleri
+    ctx.fillStyle = "#777A70";
+    ctx.font = "11px Arial";
+
+    ctx.fillText("150", 5, 25);
+    ctx.fillText("100", 5, 125);
+    ctx.fillText("50", 5, 225);
+}
+
+
+/* =====================================================
+   10. CSV EXPORT
+   Ölçüm geçmişini tablo dosyası olarak indirir.
+===================================================== */
+
+function exportCSV() {
+
+    if (history.length === 0) {
+        alert("No measurements available yet.");
+        return;
+    }
+
+    const rows = [
+        ["Time", "Heart Rate (bpm)"]
+    ];
+
+    history.forEach(item => {
+        rows.push([
+            item.time,
+            item.heart.toFixed(1)
+        ]);
+    });
+
+    const csv = rows.map(row =>
+        row.join(",")
+    ).join("\n");
+
+    const blob = new Blob(
+        [csv],
+        { type: "text/csv;charset=utf-8;" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "astra-health-measurements.csv";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+}
+
+</script>
+
+</body>
+</html>
